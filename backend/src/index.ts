@@ -10,17 +10,15 @@ const port = 3000;
 
 app.use(express.json());
 
-// Используем routes, но запуск сервера перенесём после подключения
 app.use('/api/tasks', taskRoutes);
 
-// Главная страница
 app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to Task Manager API');
 });
 
 async function startServer() {
   try {
-    await connectDB(); // Дождись подключения к MongoDB
+    await connectDB();
     console.log('MongoDB connected!');
 
     app.listen(port, () => {
