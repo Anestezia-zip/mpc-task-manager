@@ -18,7 +18,7 @@ export const getTaskById = (req: Request, res: Response) => {
 // Function checks if the title is provided, generates a unique ID,
 // adds the task to the array, and returns the created task with a 201 status code.
 export const createTask = (req: Request, res: Response) => {
-  const { title, description } = req.body;
+  const { title, description, status } = req.body;
 
   if (!title) {
     return res.status(400).json({ message: "Title is required" });
@@ -28,7 +28,7 @@ export const createTask = (req: Request, res: Response) => {
     id: nanoid(6),
     title,
     description,
-    status: false,
+    status,
   };
 
   tasks.push(newTask);
@@ -54,8 +54,21 @@ export const updateTask = (req: Request, res: Response) => {
   }
 
   task.title = title;
-  task.description = description; // Пустая строка допустима
+  task.description = description;
   task.status = status;
 
   return res.status(200).json(task);
 };
+
+export const deleteTask = (req: Request, res: Response) => {
+    const { id } = req.params;
+    const taskIndex = tasks.findIndex((t) => t.id === id);
+  
+    if (taskIndex === -1) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+  
+    tasks.splice(taskIndex, 1);
+    return res.status(204).send(); // Return status 204 (No Content), since the response body is not needed
+  };
+  

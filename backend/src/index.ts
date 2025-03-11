@@ -1,8 +1,11 @@
 import express, { Request, Response } from 'express';
 import taskRoutes from './app/routes/taskRoutes';
+import { connectDB } from './lib/database';
 
 const app = express();
 const port = 3000;
+
+connectDB();
 
 // Middleware
 app.use(express.json());
